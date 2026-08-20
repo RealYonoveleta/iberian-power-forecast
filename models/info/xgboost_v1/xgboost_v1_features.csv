@@ -1,0 +1,68 @@
+feature,importance
+price,0.2856535
+rolling_1w_mean,0.057896804
+target_hour,0.051067263
+rolling_24h_mean,0.039132092
+target_weekday,0.037451867
+hour,0.032689843
+wind_speed_100m_Vitoria-Gasteiz,0.031001316
+wind_speed_100m_Santiago de Compostela,0.029313128
+wind_speed_100m_Valladolid,0.02393585
+temperature_2m_Murcia,0.023863193
+wind_speed_100m_Oviedo,0.023007901
+wind_speed_100m_Pamplona,0.021029377
+wind_speed_100m_Santander,0.020815907
+temperature_2m_Valencia,0.017613756
+rolling_1w_std,0.012602566
+wind_speed_100m_Toledo,0.012045477
+temperature_2m_Zaragoza,0.011910653
+wind_speed_100m_Valencia,0.011835059
+temperature_2m_Sevilla,0.011494496
+wind_speed_100m_Zaragoza,0.01134649
+month,0.010502513
+temperature_2m_Santander,0.009633735
+cloud_cover_Merida,0.009231265
+wind_speed_100m_Logrono,0.009017768
+temperature_2m_Toledo,0.008782604
+temperature_2m_Palma,0.008003614
+temperature_2m_Barcelona,0.0077109495
+wind_speed_100m_Palma,0.0073518753
+temperature_2m_Merida,0.006780241
+cloud_cover_Madrid,0.006777907
+temperature_2m_Santa Cruz de Tenerife,0.006408691
+temperature_2m_Pamplona,0.0060435915
+cloud_cover_Valencia,0.0057954527
+cloud_cover_Sevilla,0.005778274
+wind_speed_100m_Barcelona,0.005726025
+temperature_2m_Valladolid,0.005722607
+temperature_2m_Santiago de Compostela,0.0056205136
+lag_48h,0.0054411246
+hours_ahead,0.0053247768
+wind_speed_100m_Santa Cruz de Tenerife,0.0052739424
+temperature_2m_Madrid,0.0049605467
+wind_speed_100m_Madrid,0.004920167
+temperature_2m_Oviedo,0.004525014
+temperature_2m_Logrono,0.004515211
+temperature_2m_Vitoria-Gasteiz,0.0044488073
+wind_speed_100m_Murcia,0.0041819084
+cloud_cover_Santiago de Compostela,0.004163706
+wind_speed_100m_Merida,0.004152808
+cloud_cover_Murcia,0.004006736
+cloud_cover_Toledo,0.0038935302
+cloud_cover_Logrono,0.0037421703
+cloud_cover_Palma,0.003453583
+cloud_cover_Oviedo,0.0034284964
+lag_24h,0.003344108
+cloud_cover_Barcelona,0.0033229853
+cloud_cover_Valladolid,0.0032020665
+wind_speed_100m_Sevilla,0.0031476363
+lag_1w,0.0030429144
+cloud_cover_Pamplona,0.0030388203
+rolling_1w_mean_diff,0.0029905427
+weekday,0.0029260647
+rolling_24h_std,0.0028398274
+cloud_cover_Vitoria-Gasteiz,0.0028230406
+cloud_cover_Santander,0.002161479
+cloud_cover_Santa Cruz de Tenerife,0.0020696074
+rolling_24h_mean_diff,0.0020609559
+cloud_cover_Zaragoza,0.002003321

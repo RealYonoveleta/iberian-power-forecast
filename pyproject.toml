@@ -1,0 +1,26 @@
+[project]
+name = "precio-electricidad-ml"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Jonas Martinez", email = "martinezcuestajonas@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "joblib>=1.5.3",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.11.1",
+    "pandas>=3.0.5",
+    "pyarrow>=25.0.1",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.0",
+    "xgboost>=3.4.1",
+]
+
+[project.scripts]
+precio-electricidad-ml = "precio_electricidad_ml:main"
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
