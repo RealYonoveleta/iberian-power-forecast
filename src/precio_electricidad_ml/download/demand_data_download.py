@@ -33,7 +33,7 @@ df["datetime"] = pd.to_datetime(
 
 df = df[["datetime", "value"]]
 
-df = df.rename(columns={"value": "demand"})
+df = df.rename(columns={"value": "demand_forecast"})
 
 df = df.sort_values("datetime")
 

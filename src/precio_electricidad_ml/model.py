@@ -9,12 +9,6 @@ df = raw_dataset.copy()
 
 VERSION = "xgboost_v1"
 
-unique_dates = (
-    df["prediction_time"]
-    .sort_values()
-    .unique()
-)
-
 split_date = pd.Timestamp(
     "2025-01-01",
     tz="UTC"

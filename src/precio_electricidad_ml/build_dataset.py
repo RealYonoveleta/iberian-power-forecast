@@ -3,6 +3,9 @@ import pandas as pd
 spot_price_features = pd.read_parquet("data/features/spot_price_features.parquet")
 meteo_features = pd.read_parquet("data/features/meteo_features.parquet")
 demand_features = pd.read_parquet("data/features/demand_features.parquet")
+wind_generation_forecast_features = pd.read_parquet("data/features/wind_generation_forecast_features.parquet")
+solarpv_generation_forecast_features = pd.read_parquet("data/features/solarpv_generation_forecast_features.parquet")
+solarth_generation_forecast_features = pd.read_parquet("data/features/solarth_generation_forecast_features.parquet")
 
 df = spot_price_features.copy()
 
@@ -34,19 +37,43 @@ df = (
 df = (
     df
     .merge(
-        meteo_features,
-        left_on="target_time",
-        right_on="datetime",
-        how="inner"
-    )
-    .drop(columns=["datetime"])
-    .merge(
         demand_features,
         left_on="target_time",
         right_on="datetime",
         how="inner"
     )
     .drop(columns=["datetime"])
+    .merge(
+        wind_generation_forecast_features,
+        left_on="target_time",
+        right_on="datetime",
+        how="inner"
+    )
+    .drop(columns=["datetime"])
+    .merge(
+        solarpv_generation_forecast_features,
+        left_on="target_time",
+        right_on="datetime",
+        how="inner"
+    )
+    .drop(columns=["datetime"])
+    .merge(
+        solarth_generation_forecast_features,
+        left_on="target_time",
+        right_on="datetime",
+        how="inner"
+    )
+    .drop(columns=["datetime"])
 )
+
+df["renewable_generation_forecast"] = (
+    df["wind_generation_forecast"]
+    + df["solarpv_generation_forecast"]
+    + df["solarth_generation_forecast"]
+)
+
+df["net_demand"] = df["demand_forecast"] - df["renewable_generation_forecast"]
+
+df["renewable_ratio"] = df["renewable_generation_forecast"] / df["demand_forecast"]
 
 df.to_parquet("data/datasets/training_dataset.parquet")
