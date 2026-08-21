@@ -38,6 +38,7 @@ data = download_chunks(chunks, process_cunk)
 df = pd.DataFrame(data)
 
 df = df[["datetime", "value"]]
+
 df = df.rename(columns={"value": "price"})
 df["datetime"] = pd.to_datetime(
     df["datetime"],

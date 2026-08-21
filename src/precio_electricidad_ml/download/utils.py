@@ -1,14 +1,18 @@
 import pandas as pd
+from concurrent.futures import ThreadPoolExecutor
 
-def generate_chunks(start_date, end_date, years=1):
+def generate_chunks(start_date, end_date, **offset):
     start = pd.Timestamp(start_date)
     end = pd.Timestamp(end_date)
 
     chunks = []
 
+    if not offset:
+        offset = {"years": 1}
+
     while start < end:
         chunk_end = min(
-            start + pd.DateOffset(years=years),
+            start + pd.DateOffset(**offset),
             end
         )
 
@@ -19,18 +23,20 @@ def generate_chunks(start_date, end_date, years=1):
     return chunks
 
 
-def download_chunks(chunks, process_cunk):
+def download_chunks(chunks, process_chunk):
 
-    full_response = []
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        full_response = [
+            record
+            for response in executor.map(
+                lambda chunk: process_chunk(*chunk),
+                chunks
+            )
+            for record in response
+        ]
 
-    for start, end in chunks:
-        response = process_cunk(start, end)
-        full_response.extend(response)
-
-    records = (
+    return (
         pd.DataFrame(full_response)
         .drop_duplicates()
         .to_dict()
     )
-
-    return records

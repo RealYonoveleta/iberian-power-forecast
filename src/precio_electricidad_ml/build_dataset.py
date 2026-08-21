@@ -2,6 +2,7 @@ import pandas as pd
 
 spot_price_features = pd.read_parquet("data/features/spot_price_features.parquet")
 meteo_features = pd.read_parquet("data/features/meteo_features.parquet")
+demand_features = pd.read_parquet("data/features/demand_features.parquet")
 
 df = spot_price_features.copy()
 
@@ -30,13 +31,22 @@ df = (
     .rename(columns={"datetime": "prediction_time"})
 )
 
-df = df.merge(
-    meteo_features,
-    left_on="target_time",
-    right_on="datetime",
-    how="inner"
+df = (
+    df
+    .merge(
+        meteo_features,
+        left_on="target_time",
+        right_on="datetime",
+        how="inner"
+    )
+    .drop(columns=["datetime"])
+    .merge(
+        demand_features,
+        left_on="target_time",
+        right_on="datetime",
+        how="inner"
+    )
+    .drop(columns=["datetime"])
 )
-
-df = df.drop(columns=["datetime"])
 
 df.to_parquet("data/datasets/training_dataset.parquet")
