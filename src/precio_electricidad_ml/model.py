@@ -95,21 +95,19 @@ results["abs_error"] = (
 ).abs()
 
 def mae_by(period):
-    return (
+    mae_by_period = (
         results
         .groupby(period)["abs_error"]
         .mean()
         .sort_index()
     )
 
+    mae_by_period.to_csv(
+        f"models/info/{VERSION}/{VERSION}_mae_by_{period}.csv"
+    )
+
+    return mae_by_period
+
 
 mae_by_horizon = mae_by("hours_ahead")
 mae_by_month = mae_by("month")
-
-mae_by_horizon.to_csv(
-    f"models/info/{VERSION}/{VERSION}_mae_by_horizon.csv"
-)
-
-mae_by_month.to_csv(
-    f"models/info/{VERSION}/{VERSION}_mae_by_month.csv"
-)

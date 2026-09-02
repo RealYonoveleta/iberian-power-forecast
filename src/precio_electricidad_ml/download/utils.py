@@ -23,9 +23,9 @@ def generate_chunks(start_date, end_date, **offset):
     return chunks
 
 
-def download_chunks(chunks, process_chunk):
+def download_chunks(chunks, process_chunk, max_workers=10):
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         full_response = [
             record
             for response in executor.map(
