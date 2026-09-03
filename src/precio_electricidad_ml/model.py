@@ -30,7 +30,7 @@ X_train = train.drop(
     ]
 )
 
-y_train = train["target"]
+y_train = train["target"] - train["price"]
 
 X_test = test.drop(
     columns=[
@@ -40,7 +40,7 @@ X_test = test.drop(
     ]
 )
 
-y_test = test["target"]
+y_test = test["target"] - test["price"]
 
 model = XGBRegressor(
     n_estimators=300,
@@ -49,18 +49,24 @@ model = XGBRegressor(
     random_state=42
 )
 
-model.fit(X_train, y_train)
+selected_features = [
+    "price", 
+    "hours_ahead",
+    "price_diff_1h",
+    "target_hour", 
+    "target_weekday", 
+    "target_is_holiday"
+]
 
-preds = model.predict(X_test)
+model.fit(X_train[selected_features], y_train)
 
-mae = mean_absolute_error(y_test, preds)
+delta_preds = model.predict(X_test[selected_features])
 
-baseline_preds = X_test["lag_24h"]
+preds = X_test["price"] + delta_preds
 
-baseline_mae = mean_absolute_error(
-    y_test,
-    baseline_preds
-)
+mae = mean_absolute_error(test["target"], preds)
+
+baseline_mae = y_test.abs().mean()
 
 print(f"MAE: {mae:.2f}")
 print(f"Baseline MAE: {baseline_mae:.2f}")
@@ -72,7 +78,7 @@ Path(f"models/info/{VERSION}").mkdir(
 
 feature_importance = pd.Series(
     model.feature_importances_,
-    index=X_train.columns
+    index=selected_features
 ).sort_values(ascending=False)
 
 joblib.dump(
@@ -94,16 +100,21 @@ results["abs_error"] = (
     - results["prediction"]
 ).abs()
 
-def mae_by(period):
+results["baseline_abs_error"] = (
+    results["target"]
+    - results["price"]
+).abs()
+
+def mae_by(period, column="abs_error"):
     mae_by_period = (
         results
-        .groupby(period)["abs_error"]
+        .groupby(period)[column]
         .mean()
         .sort_index()
     )
 
     mae_by_period.to_csv(
-        f"models/info/{VERSION}/{VERSION}_mae_by_{period}.csv"
+        f"models/info/{VERSION}/{VERSION}_{column}_by_{period}.csv"
     )
 
     return mae_by_period
@@ -111,3 +122,5 @@ def mae_by(period):
 
 mae_by_horizon = mae_by("hours_ahead")
 mae_by_month = mae_by("month")
+
+baseline_mae_by_horizon = mae_by("hours_ahead", column="baseline_abs_error")

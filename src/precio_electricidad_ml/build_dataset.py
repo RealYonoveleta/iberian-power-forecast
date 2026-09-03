@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 spot_price_features = pd.read_parquet("data/features/spot_price_features.parquet")
@@ -11,7 +12,7 @@ FEATURE_FILES = [
     "mechanism_adjustment_features",
     "nuclear_generation_forecast_features",
     "hydro_generation_forecast_features",
-    "available_generation_capacity_features",
+    #"available_generation_capacity_features",
 ]
 
 feature_tables = [
@@ -53,6 +54,20 @@ for h in range(1, MAX_HORIZON + 1):
     tmp["target_hour"] = future_time.dt.hour
     tmp["target_weekday"] = future_time.dt.weekday
     tmp["target_is_holiday"] = future_time.dt.date.isin(HOLIDAYS)
+
+    # cyclical encodings use target_time fields: the model predicts target_time, not prediction_time
+    tmp["hour_sin"] = np.sin(2 * np.pi * tmp["target_hour"] / 24)
+    tmp["hour_cos"] = np.cos(2 * np.pi * tmp["target_hour"] / 24)
+
+    tmp["weekday_sin"] = np.sin(2 * np.pi * tmp["target_weekday"] / 7)
+    tmp["weekday_cos"] = np.cos(2 * np.pi * tmp["target_weekday"] / 7)
+
+    tmp["month_sin"] = np.sin(2 * np.pi * future_time.dt.month / 12)
+    tmp["month_cos"] = np.cos(2 * np.pi * future_time.dt.month / 12)
+
+    week_hour = tmp["target_weekday"] * 24 + tmp["target_hour"]
+    tmp["week_hour_sin"] = np.sin(2 * np.pi * week_hour / 168)
+    tmp["week_hour_cos"] = np.cos(2 * np.pi * week_hour / 168)
 
     datasets.append(tmp)
 

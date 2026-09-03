@@ -33,6 +33,8 @@ df["rolling_1w_mean"] = rolling_1w.mean()
 df["rolling_1w_std"] = rolling_1w.std()
 df["rolling_1w_mean_diff"] = df["rolling_1w_mean"].diff()
 
+df["price_diff_1h"] = df["price"].diff()
+
 df = df.dropna()
 
 df.to_parquet("data/features/spot_price_features.parquet")

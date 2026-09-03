@@ -19,6 +19,10 @@ df_wide.columns = [
 
 df_wide = df_wide.reset_index()
 
+df_wide = df_wide.drop(
+    columns=["interconnection_balance_marruecos", "interconnection_balance_andorra"]
+)
+
 balance_columns = [
     c for c in df_wide.columns
     if c.startswith("interconnection_balance_")
@@ -38,5 +42,7 @@ rolling_24h = (
 df_wide["net_interconnection_balance_rolling_24h_mean"] = rolling_24h.mean()
 df_wide["net_interconnection_balance_rolling_24h_std"] = rolling_24h.std()
 df_wide["net_interconnection_balance_rolling_24h_mean_diff"] = df_wide["net_interconnection_balance_rolling_24h_mean"].diff()
+
+df_wide = df_wide.dropna()
 
 df_wide.to_parquet("data/features/interconnection_balance_features.parquet")
